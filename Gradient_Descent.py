@@ -23,13 +23,17 @@ def grad(X,Y,Y_cap,W,alpha):
     grad = (1/n)*np.dot(X.T,Y_cap-Y) + alpha*W
     return grad
 
-def reportCosts (w, trainingFaces, trainingLabels, testingFaces, testingLabels, alpha = 0.):
-    print ("Training cost: {}".format(J(w, trainingFaces, trainingLabels, alpha)))
-    print ("Testing cost:  {}".format(J(w, testingFaces, testingLabels, alpha)))
 
-def random_data():
-
-    return 
+def ReportAccuracy_2(w,testingFaces,testingLabels):
+    yhat = sigmoid(testingFaces,w)
+    y_hat_fin = np.argmax(yhat,axis=1)
+    testingLabels_fin = np.argmax(testingLabels,axis=1)
+    acc = np.sum(y_hat_fin== testingLabels_fin)/(testingLabels.shape[0])
+    print("Accuracy : {}".format(acc))
+    return acc
+        
+def reportCosts (w, trainingFaces, trainingLabels, alpha = 0.):
+    print ("cost:",cross_entropy_loss(trainingFaces, trainingLabels,w, alpha))
 
 def gradient_Descent(mnist_train_images,mnist_train_labels,alpha):
     
@@ -65,27 +69,33 @@ if __name__ == "__main__":
         mnist_test_images = np.load("mnist_test_images.npy")
         mnist_test_labels = np.load("mnist_test_labels.npy")
 
-    #print(mnist_train_images.shape)
-    #print(mnist_train_labels.shape) 
-    #print(mnist_validation_images.shape)
-    #print(mnist_validation_labels.shape)
-    #print(mnist_test_images.shape)
-    #print(mnist_test_labels.shape) 
-    #print(mnist_train_images[1])
-    #print(mnist_train_labels[1]) 
-    
-    # sigmoid test
-    # w = np.zeros((784,10))   
-    # print(sigmoid(mnist_train_images,w))
-    
-    # cross_entropy_loss test 
-    #cross_entropy_loss(mnist_train_images,mnist_train_labels,w,10) 
-    
-
-    # gradient descent test
+    # Implementing Gradient Descent 
     alpha = 0
-    gradient_Descent(mnist_train_images,mnist_train_labels,alpha) 
-
+    weights = gradient_Descent(mnist_train_images,mnist_train_labels,alpha) 
+    
+    print("\n")
+    # Final Losses
+    print("Final Unregularized cross_entropy_loss on : Training set ,validation set ,Testing set")
+    print("=====================================================================================")
+    # Accuracy on training set  
+    print("Training set ",end=""),reportCosts(weights,mnist_train_images,mnist_train_labels)
+    #Accuracy on validation set
+    print("Validation set ",end=""),reportCosts(weights,mnist_validation_images,mnist_validation_labels)
+    #Accuracy on testing set
+    print("Testing set ",end=""),reportCosts(weights,mnist_test_images,mnist_test_label
+    
+    print("\n")
+    # Final Accuracies
+    print("Final Accuracies on : Training set ,validation set ,Testing set")
+    print("================================================================")
+    # Accuracy on training set  
+    print("Training set ",end=""),ReportAccuracy_2(weights,mnist_train_images,mnist_train_labels)
+    #Accuracy on validation set
+    print("Validationset",end=""),ReportAccuracy_2(weights,mnist_validation_images,mnist_validation_labels)
+    #Accuracy on testing set
+    print("Testing set ",end=""),ReportAccuracy_2(weights,mnist_test_images,mnist_test_labels)
+    
+    
 
 
 
