@@ -1,3 +1,5 @@
+Implemented Softmax Regression with Gradient Descent optimization algorithm and Stochastic Gradient Descent optimization algorithm from scratch using Numpy.
+
 Dependencies :
 Numpy
 opencv
